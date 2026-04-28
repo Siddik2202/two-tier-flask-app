@@ -101,7 +101,28 @@ kubectl apply -f persistent-volume.yml
 kubectl apply -f persistent-volume-claim.yml
 ```
 
-### Using Helm we add some advanced features.
+### Using EKS we deploy this two-tire-flask app
 
+1. Create EC2 instance- Connect instance. and install AWS CLI. 
 
+2. Create a user and administratorAccess with attach policy. Also create a access key by enabling checkbox with command line interface. 
+	2.1 AmazonEKSClusterPolicy , AmazonEKSWorkerNodePolicy, AmazonEC2FullAccess, IAMFullAccess (For not administrative)
 
+3. Now configure aws and Install kubectl, eksctl. 
+
+4. Now create Cluster->  
+   ```bash
+   eksctl create cluster  --name tws-cluster --region ap-sount-1 --node-type t3.small --node-min 2 --node-max-4
+   ```
+5. To set password on secret base-64 use echo -n "admin" | base64 (For secret manifest file)
+
+6. Now clonse this project. And go to k8s or eks-manifests file.
+
+6. Run using kubectl apply -f file1.yaml -f file2.yaml ... (all mysql and then project-files )
+
+7. By running below commadn you can access using url
+   ```bahs
+   kubectl get all & kubectl get node
+   ```
+
+   Thank you so much 
