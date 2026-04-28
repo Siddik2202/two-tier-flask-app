@@ -3,34 +3,30 @@
 
 This is a simple Flask app that interacts with a MySQL database. The app allows users to submit messages, which are then stored in the database and displayed on the frontend.
 
-## Prerequisites
-
-Before you begin, make sure you have the following installed:
-
-- Docker
-- Git (optional, for cloning the repository)
-
-## Setup
-
-1. Clone this repository (if you haven't already):
-
+1. Launch a EC2 Instances by selecting type, security, storage And create.
+   
+2. Now access the instance and clonse your project from github.
    ```bash
-   git clone https://github.com/your-username/your-repo-name.git
+   git clone https://github.com/Siddik2202/two-tier-flask-app.git
+   ```
+3. Now build your dockerfile and build and run this application.
+   ```bash
+   
    ```
 
-2. Navigate to the project directory:
+5. Navigate to the project directory:
 
    ```bash
    cd your-repo-name
    ```
 
-3. Create a `.env` file in the project directory to store your MySQL environment variables:
+6. Create a `.env` file in the project directory to store your MySQL environment variables:
 
    ```bash
    touch .env
    ```
 
-4. Open the `.env` file and add your MySQL configuration:
+7. Open the `.env` file and add your MySQL configuration:
 
    ```
    MYSQL_HOST=mysql
