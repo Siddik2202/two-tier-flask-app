@@ -11,80 +11,14 @@ This is a simple Flask app that interacts with a MySQL database. The app allows 
    ```
 3. Now build your dockerfile and build and run this application.
    ```bash
-   
+   docker build -t flaskapp .
    ```
-
-5. Navigate to the project directory:
-
-   ```bash
-   cd your-repo-name
-   ```
-
-6. Create a `.env` file in the project directory to store your MySQL environment variables:
-
-   ```bash
-   touch .env
-   ```
-
-7. Open the `.env` file and add your MySQL configuration:
-
-   ```
-   MYSQL_HOST=mysql
-   MYSQL_USER=your_username
-   MYSQL_PASSWORD=your_password
-   MYSQL_DB=your_database
-   ```
-
-## Usage
-
-1. Start the containers using Docker Compose:
-
-   ```bash
-   docker-compose up --build
-   ```
-
-2. Access the Flask app in your web browser:
-
-   - Frontend: http://localhost
-   - Backend: http://localhost:5000
-
-3. Create the `messages` table in your MySQL database:
-
-   - Use a MySQL client or tool (e.g., phpMyAdmin) to execute the following SQL commands:
-   
-     ```sql
-     CREATE TABLE messages (
-         id INT AUTO_INCREMENT PRIMARY KEY,
-         message TEXT
-     );
-     ```
-
-4. Interact with the app:
-
-   - Visit http://localhost to see the frontend. You can submit new messages using the form.
-   - Visit http://localhost:5000/insert_sql to insert a message directly into the `messages` table via an SQL query.
-
-## Cleaning Up
-
-To stop and remove the Docker containers, press `Ctrl+C` in the terminal where the containers are running, or use the following command:
-
-```bash
-docker-compose down
-```
-
-## To run this two-tier application using  without docker-compose
-
-- First create a docker image from Dockerfile
-```bash
-docker build -t flaskapp .
-```
-
-- Now, make sure that you have created a network using following command
+4. Now, make sure that you have created a network using following command
 ```bash
 docker network create twotier
 ```
 
-- Attach both the containers in the same network, so that they can communicate with each other
+5. Attach both the containers in the same network, so that they can communicate with each other
 
 i) MySQL container 
 ```bash
@@ -111,5 +45,46 @@ docker run -d \
     flaskapp:latest
 
 ```
+6. Open the `.env` file and add your MySQL configuration:
+
+   ```
+   MYSQL_HOST=mysql
+   MYSQL_USER=your_username
+   MYSQL_PASSWORD=your_password
+   MYSQL_DB=your_database
+   ```
+
+7.  Create the `messages` table in your MySQL database:
+
+   - Use a MySQL client or tool (e.g., phpMyAdmin) to execute the following SQL commands:
+     ```bahs
+     docker exec -it <mysql container id> bash 
+     mysql -u root -p
+     # Enter Password and chnaged to database and create table.
+     ```
+   
+     ```sql
+     CREATE TABLE messages (
+         id INT AUTO_INCREMENT PRIMARY KEY,
+         message TEXT
+     );
+     ```
+### Using Docker Compose
+1. Start the containers using Docker Compose, Befor that you need to logIn, add tag on image and push to DockerHub.
+
+   ```bash
+   docker-compose up --build
+   ```
+
+2. Access the Flask app in your web browser:
+
+   - Frontend: http://localhost
+   - Backend: http://localhost:5000
+
+ 
+   - Visit http://localhost to see the frontend. You can submit new messages using the form.
+   - Visit http://localhost:5000/insert_sql to insert a message directly into the `messages` table via an SQL query.
+
+### Using Docker Compose
 
 
