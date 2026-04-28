@@ -85,6 +85,23 @@ docker run -d \
    - Visit http://localhost to see the frontend. You can submit new messages using the form.
    - Visit http://localhost:5000/insert_sql to insert a message directly into the `messages` table via an SQL query.
 
-### Using Docker Compose
+### Using kubeadm we add some advanced features.
+
+1. First setup kubernetes kubeadm cluster
+
+2. Move to k8s directory cd two-tier-flask-app/k8s
+
+3. Now, execute below commands one by one
+```bash
+kubectl apply -f twotier-deployment.yml
+kubectl apply -f twotier-deployment-svc.yml
+kubectl apply -f mysql-deployment.yml
+kubectl apply -f mysql-deployment-svc.yml
+kubectl apply -f persistent-volume.yml
+kubectl apply -f persistent-volume-claim.yml
+```
+
+### Using Helm we add some advanced features.
+
 
 
