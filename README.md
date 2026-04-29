@@ -125,4 +125,6 @@ kubectl apply -f persistent-volume-claim.yml
    kubectl get all & kubectl get node
    ```
 
-   Thank you so much 
+   Thank you so much
+
+   ## Now We Deploy through EKS using Terraform
