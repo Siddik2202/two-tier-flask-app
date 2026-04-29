@@ -128,3 +128,5 @@ kubectl apply -f persistent-volume-claim.yml
    Thank you so much
 
    ## Now We Deploy through EKS using Terraform
+
+   1st INinitialize the terraform
