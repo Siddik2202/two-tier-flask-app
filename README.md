@@ -229,8 +229,13 @@ aws eks associate-access-policy --cluster-name my-eks-cluster --principal-arn ar
 ```
 16. To check or debug your svc us this command
 ```bash
-# nslookup <svc url> lIt look like 
+# nslookup <svc url> lIt look like
+# Check if the Load Balancer domain is correctly resolving to an IP address
 nslookup k8s-default-twotiera-ce39083e74-4ed283ec01fa7a63.elb.ap-south-1.amazonaws.com
+# To check aes configure connectivity
+aws sts get-caller-identity
+# To check besic logs of pods
+kubectl logs pod/two-tier-app-784fcf9f5d-twmtt<Your_Pod>
 ```
 Thank you So much, This is an amizing project and you will understand full eks architecture.
 
