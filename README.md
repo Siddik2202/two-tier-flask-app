@@ -191,8 +191,20 @@ kubectl get pods -n kube-system
 kubectl get deployment -n kube-system aws-load-balancer-controller
 ```
 11. After that clone you project from git, In my case I already create eks-manifest files so no need to create yaml file again.
+```bash
+git clone https://github.com/Siddik2202/two-tier-flask-app.git
+```
+12. Now go to eks-manifests path and run yaml file then run one by one
+```bash
+ kubectl apply -f mysql-configmap.yml
+ kubectl apply -f mysql-secrets.yml
+ kubectl apply -f mysql-deployment.yml
+ kubectl apply -f mysql-svc.yml
+ kubectl apply -f two-tier-app-deployment.yml
+ kubectl apply -f two-tier-app-svc.yml
+```
 
-12. To show resources we need to create and associat Adminpolicy
+14. To show resources we need to create and associat Adminpolicy
 ```bash
 aws eks associate-access-policy \
   --cluster-name my-eks-cluster \
