@@ -127,7 +127,101 @@ kubectl apply -f persistent-volume-claim.yml
 
    Thank you so much
 
-   ## Now We Deploy through EKS using Terraform
+## Now We Deploy through EKS using Terraform
 
-   1st INinitialize the terraform
-   2nd, Apply and clone 
+1. Ininitialize your terraform using, after creating try to run plan command and when complete then run apply command
+```bash
+terraform init
+terraform plan
+terraform apply # To create
+terraform destroy # To delete all resources
+```
+2. Create you module separetly eks and vpc.
+
+3.  After creating all resources completely run 
+```bash
+aws eks update-kubeconfig --region ap-south-1 --name my-eks-cluster
+kubectl get nodes
+```
+    
+4. Kubernetes does NOT have permission to talk to AWS directly ❌. OIDC Provider (IRSA Setup): You are telling AWS: “Trust this Kubernetes cluster identity”
+```bash
+# We already give access through code so no need but this crucial when you create fresh project.
+eksctl utils associate-iam-oidc-provider \
+  --region ap-south-1 \
+  --cluster my-eks-cluster \
+  --approve
+```
+5. It contains permissions (IAM policy) required by: 👉 AWS Load Balancer Controller.
+```bash
+curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/main/docs/install/iam_policy.json
+```
+6. You define what actions are allowed. like Create Load Balancer / Modify security group.
+```bash
+aws iam create-policy \
+  --policy-name AWSLoadBalancerControllerIAMPolicy \
+  --policy-document file://iam_policy.json
+```
+7. This specific Kubernetes component can use this IAM role”
+```bash
+eksctl create iamserviceaccount \
+  --cluster=my-eks-cluster \
+  --namespace=kube-system \
+  --name=aws-load-balancer-controller \
+  --role-name AmazonEKSLoadBalancerControllerRole \
+  --attach-policy-arn=arn:aws:iam::<AWS-ACCOUNT-ID>:policy/AWSLoadBalancerControllerIAMPolicy \
+  --approve
+```
+8. To add Helm Repo run below command
+```bash
+helm repo add eks https://aws.github.io/eks-charts
+helm repo update
+```
+9. This installs a software inside your Kubernetes cluster: 👉 AWS Load Balancer Controlle.
+```bash
+helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
+  -n kube-system \
+  --set clusterName=my-eks-cluster \
+  --set serviceAccount.create=false \
+  --set serviceAccount.name=aws-load-balancer-controller
+```
+10. # Verify Installation
+```bash
+kubectl get pods -n kube-system
+kubectl get deployment -n kube-system aws-load-balancer-controller
+```
+11. After that clone you project from git, In my case I already create eks-manifest files so no need to create yaml file again.
+
+12. To show resources we need to create and associat Adminpolicy
+```bash
+aws eks associate-access-policy \
+  --cluster-name my-eks-cluster \
+  --principal-arn arn:aws:iam::<USER_ACCOUNT_ID>:user/terraform-admin \
+  --policy-arn arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy \
+  --access-scope type=cluster
+```
+
+ # 1. Create entry for the Root user
+ ```bash
+aws eks create-access-entry --cluster-name my-eks-cluster --principal-arn arn:aws:iam::339713170737:root --type STANDARD
+```
+# 2. Give the Root user admin permissions
+```bash
+aws eks associate-access-policy --cluster-name my-eks-cluster --principal-arn arn:aws:iam::339713170737:root --policy-arn arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy --access-scope type=cluster
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
