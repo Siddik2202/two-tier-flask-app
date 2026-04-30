@@ -89,7 +89,7 @@ docker run -d \
 
 1. First setup kubernetes kubeadm cluster
 
-2. Move to k8s directory cd two-tier-flask-app/k8s
+2. Move to k8s directory cd two-tier-flask-app/k8s. 
 
 3. Now, execute below commands one by one
 ```bash
@@ -101,7 +101,7 @@ kubectl apply -f persistent-volume.yml
 kubectl apply -f persistent-volume-claim.yml
 ```
 
-### Using EKS we deploy this two-tire-flask app
+### Using *Terraform* EKS we deploy this two-tire-flask app
 
 1. Create EC2 instance- Connect instance. and install AWS CLI. 
 
@@ -185,7 +185,7 @@ helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
   --set serviceAccount.create=false \
   --set serviceAccount.name=aws-load-balancer-controller
 ```
-10. # Verify Installation
+10. Verify Installation
 ```bash
 kubectl get pods -n kube-system
 kubectl get deployment -n kube-system aws-load-balancer-controller
@@ -193,6 +193,13 @@ kubectl get deployment -n kube-system aws-load-balancer-controller
 11. After that clone you project from git, In my case I already create eks-manifest files so no need to create yaml file again.
 ```bash
 git clone https://github.com/Siddik2202/two-tier-flask-app.git
+```
+Also update two-tier-app-svc.yml file and attach below command under metadata
+```bash
+# “Create a public Load Balancer that users on the internet can access.”
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing" # ADD THIS LINE
+# without using Not accessible from browser, Only works inside VPC
 ```
 12. Now go to eks-manifests path and run yaml file then run one by one
 ```bash
@@ -203,7 +210,6 @@ git clone https://github.com/Siddik2202/two-tier-flask-app.git
  kubectl apply -f two-tier-app-deployment.yml
  kubectl apply -f two-tier-app-svc.yml
 ```
-
 13. To show resources on eks we need to create and associat Adminpolicy. By default it's not shown on eks-cluster module. So we need to attach
 ```bash
 aws eks associate-access-policy \
