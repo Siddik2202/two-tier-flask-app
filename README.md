@@ -204,7 +204,7 @@ git clone https://github.com/Siddik2202/two-tier-flask-app.git
  kubectl apply -f two-tier-app-svc.yml
 ```
 
-14. To show resources we need to create and associat Adminpolicy
+13. To show resources on eks we need to create and associat Adminpolicy. By default it's not shown on eks-cluster module. So we need to attach
 ```bash
 aws eks associate-access-policy \
   --cluster-name my-eks-cluster \
@@ -213,17 +213,20 @@ aws eks associate-access-policy \
   --access-scope type=cluster
 ```
 
- # 1. Create entry for the Root user
+14. Create entry for the Root user
  ```bash
 aws eks create-access-entry --cluster-name my-eks-cluster --principal-arn arn:aws:iam::339713170737:root --type STANDARD
 ```
-# 2. Give the Root user admin permissions
+15. Give the Root user admin permissions
 ```bash
 aws eks associate-access-policy --cluster-name my-eks-cluster --principal-arn arn:aws:iam::339713170737:root --policy-arn arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy --access-scope type=cluster
 ```
-
-
-
+16. To check or debug your svc us this command
+```bash
+# nslookup <svc url> lIt look like 
+nslookup k8s-default-twotiera-ce39083e74-4ed283ec01fa7a63.elb.ap-south-1.amazonaws.com
+```
+Thank you So much, This is an amizing project and you will understand full eks architecture.
 
 
 
